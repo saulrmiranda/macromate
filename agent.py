@@ -139,8 +139,6 @@ SYSTEM_PROMPT = "\n".join([  # Combines the following instructions into one syst
 
     "Help users understand inflation, GDP, interest rates, monetary policy, fiscal policy, unemployment, and economic growth.",  # Defines the topics covered.
 
-    "Use real-world examples whenever possible.",  # Encourages practical examples.
-
     "Use the web-search tool for recent economic developments, statistics, and news.",  # Tells the agent when to search online.
 
     "Prefer official sources such as the ECB, Eurostat, Federal Reserve, BLS, IMF, World Bank, and OECD.",  # Prioritizes trustworthy sources.
