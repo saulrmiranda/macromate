@@ -1,7 +1,5 @@
 
-# ==============================================
-# PART 1: IMPORT THE REQUIRED LIBRARIES
-# ==============================================
+# ── PART 1: IMPORT THE REQUIRED LIBRARIES ───────────────────────────────
 
 import json  # Lets Python read and write JSON files.
 import os  # Lets us access environment variables, such as API keys.
@@ -20,9 +18,8 @@ from langchain_tavily import TavilySearch  # Gives our agent the ability to sear
 from langgraph.checkpoint.sqlite import SqliteSaver  # Stores conversation history in a local SQLite database.
 
 
-# ==============================================
-# PART 2: LOAD OUR CONFIGURATION
-# ==============================================
+
+# ── PART 2: LOAD OUR CONFIGURATION ──────────────────────────────────────
 
 PROJECT_DIR = Path(__file__).resolve().parent  # Finds the folder containing this Python script.
 
@@ -32,18 +29,16 @@ if not os.getenv("TAVILY_API_KEY"):  # Checks whether our Tavily API key was loa
     raise SystemExit("Missing TAVILY_API_KEY in .env")  # Stops the program if the key is missing.
 
 
-# ==============================================
-# PART 3: DEFINE WHERE DATA WILL BE STORED
-# ==============================================
+
+# ── PART 3: DEFINE WHERE DATA WILL BE STORED ────────────────────────────
 
 NOTES_FILE = PROJECT_DIR / "notes.json"  # This JSON file will store our macroeconomic research notes.
 
 MEMORY_FILE = PROJECT_DIR / "conversation.sqlite"  # This SQLite file will store the agent's conversation history.
 
 
-# ==============================================
-# PART 4: CREATE TOOL 1 - SAVE RESEARCH NOTES
-# ==============================================
+
+# ── PART 4: CREATE TOOL 1 - SAVE RESEARCH NOTES ─────────────────────────
 
 @tool  # Makes the Python function below available as a tool to our AI agent.
 def save_note(title: str, content: str) -> str:  # Defines a function that receives a note title and its content.
@@ -83,9 +78,8 @@ def save_note(title: str, content: str) -> str:  # Defines a function that recei
     return f"Successfully saved note: {title}"  # Sends a confirmation message back to the AI agent.
 
 
-# ==============================================
-# PART 5: CREATE TOOL 2 - READ RESEARCH NOTES
-# ==============================================
+
+# ── PART 5: CREATE TOOL 2 - READ RESEARCH NOTES ─────────────────────────
 
 @tool  # Registers this Python function as another tool available to our agent.
 def read_notes() -> str:  # Creates a function that returns previously saved notes.
@@ -101,9 +95,8 @@ def read_notes() -> str:  # Creates a function that returns previously saved not
     return NOTES_FILE.read_text(encoding="utf-8")  # Reads and returns all the saved notes.
 
 
-# ==============================================
-# PART 6: CONFIGURE OUR LOCAL GEMMA MODEL
-# ==============================================
+
+# ── PART 6: CONFIGURE OUR LOCAL GEMMA MODEL ─────────────────────────────
 
 model = ChatOllama(  # Creates a connection between LangChain and Ollama.
 
@@ -115,9 +108,8 @@ model = ChatOllama(  # Creates a connection between LangChain and Ollama.
 )
 
 
-# ==============================================
-# PART 7: CONFIGURE THE INTERNET SEARCH TOOL
-# ==============================================
+
+# ── PART 7: CONFIGURE THE INTERNET SEARCH TOOL ──────────────────────────
 
 web_search = TavilySearch(  # Creates a web-search tool using the Tavily service.
 
@@ -127,9 +119,8 @@ web_search = TavilySearch(  # Creates a web-search tool using the Tavily service
 )
 
 
-# ==============================================
-# PART 8: DEFINE THE AGENT'S INSTRUCTIONS
-# ==============================================
+
+# ── PART 8: DEFINE THE AGENT'S INSTRUCTIONS ─────────────────────────────
 
 SYSTEM_PROMPT = "\n".join([  # Combines the following instructions into one system prompt.
 
@@ -164,9 +155,8 @@ SYSTEM_PROMPT = "\n".join([  # Combines the following instructions into one syst
 ])
 
 
-# ==============================================
-# PART 9: MAKE THE MODEL'S OUTPUT READABLE
-# ==============================================
+
+# ── PART 9: MAKE THE MODEL'S OUTPUT READABLE ────────────────────────────
 
 def format_response(content):  # Defines a function for converting the AI response into readable text.
 
@@ -191,9 +181,8 @@ def format_response(content):  # Defines a function for converting the AI respon
     return str(content)  # Converts any other content type into a string.
 
 
-# ==============================================
-# PART 10: CREATE OUR MAIN PROGRAM
-# ==============================================
+
+# ── PART 10: CREATE OUR MAIN PROGRAM ────────────────────────────────────
 
 def main():  # Defines the main function that runs our AI agent.
 
@@ -271,9 +260,8 @@ def main():  # Defines the main function that runs our AI agent.
                 print("Check Ollama, your Tavily API key, and your internet connection.")  # Suggests common troubleshooting steps.
 
 
-# ==============================================
-# PART 11: START THE APPLICATION
-# ==============================================
+
+# ── PART 11: START THE APPLICATION ──────────────────────────────────────
 
 if __name__ == "__main__":  # Ensures the program starts only when this file is executed directly.
 
